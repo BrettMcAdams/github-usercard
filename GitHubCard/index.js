@@ -1,8 +1,13 @@
+import axios from 'axios'
+
 /*
   STEP 1: using axios, send a GET request to the following URL
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
+
+
+const githubData = axios.get('https://api.github.com/users/BrettMcadams')
 
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
@@ -49,6 +54,57 @@ const followersArray = [];
       </div>
     </div>
 */
+
+const entry = document.querySelector('.cards')
+
+function gitMaker(gitObj) {
+  
+  const myCard = document.createElement('div')
+  const myImg = document.createElement('img')
+  const myCardInfo = document.createElement('div')
+  const myName = document.createElement('h3')
+  const myUsername = document.createElement('p')
+  const myLocation = document.createElement('p')
+  const myProfile = document.createElement('p')
+  const myAddress = document.createElement('a')
+  const myFollowers = document.createElement('p')
+  const myFollowing = document.createElement('p')
+  const myBio = document.createElement('p')
+
+  myCard.appendChild(myImg)
+  myCard.appendChild(myCardInfo)
+  myCardInfo.appendChild(myUsername)
+  myCardInfo.appendChild(myLocation)
+  myCardInfo.appendChild(myProfile)
+  myCardInfo.appendChild(myFollowers)
+  myCardInfo.appendChild(myFollowing)
+  myCardInfo.appendChild(myBio)
+  myCardInfo.appendChild(myName)
+  myProfile.appendChild(myAddress)
+
+  myCard.classList.add('card')
+  myCardInfo.classList.add('card-info')
+  myName.classList.add('name')
+  myUsername.classList.add('username')
+
+  gitObj.then((response) => {
+    myName.innerHTML = response.data.name;
+    myUsername.innerHTML = response.data.login;
+    myLocation.innerHTML = response.data.location;
+    myImg.src = response.data.avatar_url;
+    myAddress.href = response.data.html_url;
+    myAddress.innerHTML = response.data.html_url;
+    myFollowers.innerHTML = `Followers: ${response.data.followers}`;
+    myFollowing.innerHTML = `Following: ${response.data.following}`;
+  });
+
+  return myCard
+}
+
+const gitPanel = gitMaker(githubData)
+
+entry.appendChild(gitPanel)
+
 
 /*
   List of LS Instructors Github username's:
